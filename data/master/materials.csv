@@ -1,0 +1,13 @@
+﻿plant_id,material_code,material_name,product_family,unit_price,safety_stock
+1,MAT001,Injection Component A,INJECTION,12.5,500
+1,MAT002,Injection Component B,INJECTION,16.0,400
+1,MAT003,Painted Component A,PAINTED,22.5,300
+1,MAT004,Painted Component B,PAINTED,27.0,250
+1,MAT005,Assembly Component A,ASSEMBLY,34.0,200
+1,MAT006,Assembly Component B,ASSEMBLY,39.5,180
+2,MAT001,Injection Component A,INJECTION,12.5,650
+2,MAT002,Injection Component B,INJECTION,16.0,550
+2,MAT003,Painted Component A,PAINTED,22.5,400
+2,MAT004,Painted Component B,PAINTED,27.0,350
+2,MAT005,Assembly Component A,ASSEMBLY,34.0,300
+2,MAT006,Assembly Component B,ASSEMBLY,39.5,250

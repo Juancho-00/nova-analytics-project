@@ -1,0 +1,7 @@
+﻿plant_id,line_code,line_name,product_family,daily_capacity
+1,L01,Injection Line 01,INJECTION,5000
+1,L02,Paint Line 01,PAINTED,3000
+1,L03,Assembly Line 01,ASSEMBLY,2200
+2,L01,Injection Line 01,INJECTION,6000
+2,L02,Paint Line 01,PAINTED,3500
+2,L03,Assembly Line 01,ASSEMBLY,2600
