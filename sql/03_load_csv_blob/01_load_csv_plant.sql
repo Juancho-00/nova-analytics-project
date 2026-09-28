@@ -1,43 +1,5 @@
-
 -- ============================================
--- 1. MASTER KEY
--- Solo se crea una vez
--- ============================================
-CREATE MASTER KEY 
-ENCRYPTION BY PASSWORD = '***REMOVED***';
-
--- ============================================
--- 2. CREDENTIAL
--- SAS token SIN el ?
--- ============================================
-CREATE DATABASE SCOPED CREDENTIAL AzureBlobStorageCredential
-WITH 
-    IDENTITY = 'SHARED ACCESS SIGNATURE',
-    SECRET = '***REMOVED***'
-;
-
--- ============================================
--- 3. EXTERNAL DATA SOURCE
--- Conexión con nuestro container
--- ============================================
-CREATE EXTERNAL DATA SOURCE AzureBlobStorage
-WITH (
-    TYPE = BLOB_STORAGE,
-    LOCATION = 'https://novastoragejuancho.blob.core.windows.net/nova-data',
-    CREDENTIAL = AzureBlobStorageCredential
-);
-
--- ============================================
--- 4. STAGING SCHEMA
--- Solo se crea una vez
--- ============================================
-
-CREATE SCHEMA staging;
-GO
-
-
--- ============================================
--- 5. STAGING TABLE
+-- 1. STAGING TABLE
 -- Misma estructura que plants.csv
 -- ============================================
 
@@ -50,7 +12,7 @@ GO
 
 
 -- ============================================
--- 6. CARGAR CSV DESDE BLOB
+-- 2. CARGAR CSV DESDE BLOB
 -- ============================================
 
 BULK INSERT staging.plant
@@ -65,7 +27,7 @@ WITH (
 GO
 
 -- ============================================
--- 7. COMPROBAR STAGING
+-- 3. COMPROBAR STAGING
 -- ============================================
 
 SELECT *
@@ -74,7 +36,7 @@ GO
 
 
 -- ============================================
--- 8. INSERTAR EN TABLA FINAL
+-- 4. INSERTAR EN TABLA FINAL
 -- ============================================
 
 INSERT INTO master.plant (
@@ -91,7 +53,7 @@ GO
 
 
 -- ============================================
--- 9. COMPROBAR TABLA FINAL
+-- 5. COMPROBAR TABLA FINAL
 -- ============================================
 
 SELECT *
@@ -100,7 +62,7 @@ GO
 
 
 -- ============================================
--- 10. LIMPIAR STAGING
+-- 6. LIMPIAR STAGING
 -- ============================================
 
 TRUNCATE TABLE staging.plant;
