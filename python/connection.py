@@ -72,7 +72,8 @@ connection_url = URL.create(
     },
 )
 
-engine = create_engine(connection_url, pool_pre_ping=True)
+# fast_executemany: inserciones masivas mucho más rápidas con pyodbc
+engine = create_engine(connection_url, pool_pre_ping=True, fast_executemany=True)
 
 
 if __name__ == "__main__":

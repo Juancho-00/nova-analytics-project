@@ -1,3 +1,4 @@
 pyodbc
 sqlalchemy>=2.0
 python-dotenv
+numpy
