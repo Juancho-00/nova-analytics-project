@@ -51,9 +51,8 @@ def get_connection():
         f"PWD={DB_SECRET};"
         "Encrypt=yes;"
         "TrustServerCertificate=no;"
-        "Connection Timeout=30;"
     )
-    return pyodbc.connect(connection_string)
+    return pyodbc.connect(connection_string, timeout=30)
 
 
 # Engine SQLAlchemy (lo usan los scripts del simulador)
@@ -68,15 +67,25 @@ connection_url = URL.create(
         "driver": ODBC_DRIVER,
         "Encrypt": "yes",
         "TrustServerCertificate": "no",
-        "Connection Timeout": "30",
     },
 )
 
 # fast_executemany: inserciones masivas mucho más rápidas con pyodbc
-engine = create_engine(connection_url, pool_pre_ping=True, fast_executemany=True)
+engine = create_engine(
+    connection_url,
+    pool_pre_ping=True,
+    fast_executemany=True,
+    connect_args={"timeout": 30},   # timeout de login en segundos
+)
 
 
 if __name__ == "__main__":
+    # Muestra a dónde intenta conectarse (sin la contraseña) para diagnosticar errores
+    print(f"Servidor : {SERVER}")
+    print(f"Base     : {DATABASE}")
+    print(f"Usuario  : {DB_USER}")
+    if SERVER.split(".")[0] == DATABASE:
+        print("⚠ AZURE_SQL_DATABASE tiene el nombre del SERVIDOR. Debe ser el nombre de la BASE DE DATOS.")
     with engine.connect() as conn:
         row = conn.execute(
             text("SELECT DB_NAME() AS db, SUSER_NAME() AS login_name")
