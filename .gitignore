@@ -1,0 +1,23 @@
+# ---- Secretos ----
+.env
+.env.*
+!.env.example
+*.secret
+secrets-replacements.txt
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# ---- Power BI (PBIP) ----
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.abf
+
+# ---- Sistema / editores ----
+.DS_Store
+Thumbs.db
+desktop.ini
