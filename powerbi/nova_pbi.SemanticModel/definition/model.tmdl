@@ -1,0 +1,38 @@
+model Model
+	culture: es-CO
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dim_customer","dim_date","dim_material","dim_production_line","fact_inventory_daily","fact_production_event","fact_production_order","fact_sales","fact_shipment","_Medidas"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table dim_customer
+ref table dim_date
+ref table DateTableTemplate_057f1d80-8715-41bd-90a3-52a65a17d708
+ref table dim_material
+ref table dim_production_line
+ref table fact_inventory_daily
+ref table fact_production_event
+ref table LocalDateTable_bef27ebd-177f-40ff-a64e-82d5e1366203
+ref table fact_production_order
+ref table LocalDateTable_e10d9521-a840-4852-b7a8-3ba545e6c41c
+ref table LocalDateTable_10467576-be3e-460f-860e-12f1eeb9efae
+ref table LocalDateTable_c00bf06e-1e69-4615-8c55-6070e0a315a0
+ref table fact_sales
+ref table LocalDateTable_8c9b9abe-56ad-4b92-8d28-6359f2d917e7
+ref table LocalDateTable_0401f5e1-b377-4c55-8fd8-84c314471de4
+ref table LocalDateTable_bda6c4d7-5607-4c02-810a-3c53d1be1134
+ref table fact_shipment
+ref table LocalDateTable_60c2071c-3e83-438d-b18f-ea7dee4d0cca
+ref table LocalDateTable_4be8f1d8-5dee-4e41-8bc7-f17c3155622f
+ref table _Medidas
+
+ref cultureInfo es-CO
+

@@ -1,0 +1,137 @@
+table fact_shipment
+	lineageTag: 361a8ef0-a853-4c7d-b1cf-2d0e290ca424
+
+	column shipment_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e3bc2ba-dce5-44e4-9b7d-f2cdaa20cf04
+		summarizeBy: sum
+		sourceColumn: shipment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ad97aa99-c00b-4990-8426-7c5eb2728cff
+		summarizeBy: sum
+		sourceColumn: sales_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_number
+		dataType: string
+		lineageTag: 8aea4b41-67a1-401c-895e-fc449e7641f5
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0a38c371-8d2e-4a14-ad3c-ebc8bf53cf97
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0514250a-e488-4ab9-98a8-eb3776899855
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipment_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b14b8fa0-f681-4563-8abd-caedd0092fa5
+		summarizeBy: none
+		sourceColumn: shipment_timestamp
+
+		variation Variación
+			isDefault
+			relationship: cf1782d8-50ee-4c6a-bf5c-7d2536337834
+			defaultHierarchy: LocalDateTable_60c2071c-3e83-438d-b18f-ea7dee4d0cca.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipment_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9472f3de-3069-436d-8084-932ab66206a1
+		summarizeBy: none
+		sourceColumn: shipment_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column requested_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e668e2c3-f84a-44fd-9567-209e312d6b16
+		summarizeBy: none
+		sourceColumn: requested_delivery_date
+
+		variation Variación
+			isDefault
+			relationship: 79e89905-b30b-47b9-a349-4f71dd627b44
+			defaultHierarchy: LocalDateTable_4be8f1d8-5dee-4e41-8bc7-f17c3155622f.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column shipped_qty
+		dataType: double
+		lineageTag: 8c72457e-eb28-4bc6-bea7-2b1a0dacf5af
+		summarizeBy: sum
+		sourceColumn: shipped_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shipped_value
+		dataType: double
+		lineageTag: cf25d6ab-28c1-450b-bd71-f90d3320f37b
+		summarizeBy: sum
+		sourceColumn: shipped_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column days_vs_requested
+		dataType: int64
+		formatString: 0
+		lineageTag: 473aa0ab-adb5-4c57-bc49-838d0cb07ff8
+		summarizeBy: sum
+		sourceColumn: days_vs_requested
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_on_time
+		dataType: int64
+		formatString: 0
+		lineageTag: 801dda15-2479-4a78-aec7-565763411db4
+		summarizeBy: sum
+		sourceColumn: is_on_time
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_shipment = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "fact_shipment"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

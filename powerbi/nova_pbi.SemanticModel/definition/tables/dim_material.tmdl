@@ -1,0 +1,108 @@
+table dim_material
+	lineageTag: 724a6555-dc19-4296-89b8-c110de8aa946
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a28c7f7-9a46-4603-a46f-3c740b827bea
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_code
+		dataType: string
+		lineageTag: 56c44ed8-3bb0-468e-a72f-5428c03cf332
+		summarizeBy: none
+		sourceColumn: material_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_name
+		dataType: string
+		lineageTag: c76d789e-a403-4fbe-81f5-6a345e798b9c
+		summarizeBy: none
+		sourceColumn: material_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_plant_label
+		dataType: string
+		lineageTag: 2e87d029-4b8b-4b30-860b-800456cf846d
+		summarizeBy: none
+		sourceColumn: material_plant_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_family
+		dataType: string
+		lineageTag: 6e6079f8-0b35-4d5f-a320-8049363f8967
+		summarizeBy: none
+		sourceColumn: product_family
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit_price
+		dataType: double
+		lineageTag: 2354bb60-dac6-4097-81fc-16e6454ffdfd
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column safety_stock
+		dataType: double
+		lineageTag: 93724567-e173-47e9-a541-22e67a411d09
+		summarizeBy: sum
+		sourceColumn: safety_stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column plant_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 44745482-1efa-4650-bdef-6b9a156ae121
+		summarizeBy: sum
+		sourceColumn: plant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column plant_code
+		dataType: string
+		lineageTag: 66617369-4e62-49e5-a5ec-c7fc74d95a9e
+		summarizeBy: none
+		sourceColumn: plant_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column plant_name
+		dataType: string
+		lineageTag: 69e477d5-aac7-407a-ac86-6a76f4222ea5
+		summarizeBy: none
+		sourceColumn: plant_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column plant_city
+		dataType: string
+		lineageTag: 18785e5c-767a-4c73-9b2c-bd4189ae60dd
+		summarizeBy: none
+		sourceColumn: plant_city
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_material = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "dim_material"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

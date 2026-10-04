@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "nova_pbi"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9bbba4f9-a67c-452c-a6ff-69dd85832661"
+  }
+}

@@ -1,0 +1,165 @@
+table dim_date
+	lineageTag: 76ec9ad3-4854-4f36-bdad-ea8a3aee9236
+	dataCategory: Time
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: c3156da5-1b58-45ed-bff3-8a329fb958d0
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 4dde150e-7737-4f27-b563-9e310c96818c
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a8c1d33-f88b-4cb5-99f3-67174b4251f0
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter_number
+		dataType: int64
+		formatString: 0
+		lineageTag: f3b9a117-a718-4b7a-9519-fb4af2cf3845
+		summarizeBy: sum
+		sourceColumn: quarter_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter_name
+		dataType: string
+		lineageTag: 273acfda-2314-4510-8f5f-818ffd55d06f
+		summarizeBy: none
+		sourceColumn: quarter_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_number
+		dataType: int64
+		formatString: 0
+		lineageTag: 17c0619b-91c3-4bd2-ab0a-8835ba91853d
+		summarizeBy: sum
+		sourceColumn: month_number
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: ab1aaaf9-6e69-4631-974c-771d99e96d93
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_short
+		dataType: string
+		lineageTag: 577238cb-b0b6-4ab2-9397-4166dee8842e
+		summarizeBy: none
+		sourceColumn: month_short
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month_key
+		dataType: int64
+		formatString: 0
+		lineageTag: f086cdc9-77d1-4e01-b7d1-aeb06adbeed5
+		summarizeBy: sum
+		sourceColumn: year_month_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: string
+		lineageTag: fa2d81f9-bd8d-4171-b5b3-f2f064d2c2f5
+		summarizeBy: none
+		sourceColumn: year_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column iso_week
+		dataType: int64
+		formatString: 0
+		lineageTag: c7fabf0a-434f-4de9-8999-5fb26f20cae6
+		summarizeBy: sum
+		sourceColumn: iso_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_start
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 887c472f-be23-4ce9-a252-24fa1101eb1c
+		summarizeBy: none
+		sourceColumn: month_start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column day_of_month
+		dataType: int64
+		formatString: 0
+		lineageTag: 51eb76ec-2a43-4c37-b808-70b9fa755ea9
+		summarizeBy: sum
+		sourceColumn: day_of_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 479a41a2-2b3c-41b6-89ec-21c53bf97b0b
+		summarizeBy: sum
+		sourceColumn: day_of_week
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		lineageTag: 8289b1eb-55ce-4790-87b4-4bd9aec74cae
+		summarizeBy: none
+		sourceColumn: day_name
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_working_day
+		dataType: int64
+		formatString: 0
+		lineageTag: cbc7a1d6-437d-4032-bc24-1a51e5fe58d6
+		summarizeBy: sum
+		sourceColumn: is_working_day
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "dim_date"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,183 @@
+table fact_production_order
+	lineageTag: 5194eb62-40ce-44f9-a581-bd754406f295
+
+	column production_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 33c3c1e3-4c3d-4f88-93e9-85b9844d9da8
+		summarizeBy: sum
+		sourceColumn: production_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_order_number
+		dataType: string
+		lineageTag: f363c8db-fc0e-45fc-89bf-76fe7a88f040
+		summarizeBy: none
+		sourceColumn: production_order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 19703a4c-797c-4486-bb5d-05a94ae30f18
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: fed79527-fce1-4085-b9da-0b0c7dc9bac5
+		summarizeBy: none
+		sourceColumn: production_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 9c516c9b-b5bd-44ca-a654-7836b5541c59
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9f6a64a1-7ba5-4925-9220-c7c0fc9c4d50
+		summarizeBy: none
+		sourceColumn: created_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column due_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2a4a3e74-9d91-45d1-8de8-2e1845e41c80
+		summarizeBy: none
+		sourceColumn: due_date
+
+		variation Variación
+			isDefault
+			relationship: 246089ef-92ba-410c-b6e4-df5d69715f8c
+			defaultHierarchy: LocalDateTable_e10d9521-a840-4852-b7a8-3ba545e6c41c.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column start_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f5de0d3f-66f2-4a3c-adb5-03caf9327129
+		summarizeBy: none
+		sourceColumn: start_date
+
+		variation Variación
+			isDefault
+			relationship: 2e7ebdcf-88ab-4d43-80d4-ab9f520cbc4f
+			defaultHierarchy: LocalDateTable_10467576-be3e-460f-860e-12f1eeb9efae.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column completion_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e5b4139c-367c-4469-b71a-442d088907e7
+		summarizeBy: none
+		sourceColumn: completion_date
+
+		variation Variación
+			isDefault
+			relationship: 9a949899-0b4f-4b57-bb77-1d1d448574b9
+			defaultHierarchy: LocalDateTable_c00bf06e-1e69-4615-8c55-6070e0a315a0.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column planned_qty
+		dataType: double
+		lineageTag: 1f7b3c4d-db79-4deb-9f50-4afd06ecbebe
+		summarizeBy: sum
+		sourceColumn: planned_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column produced_qty
+		dataType: double
+		lineageTag: bd0cfcc0-4070-47c5-94df-feb99e032f0b
+		summarizeBy: sum
+		sourceColumn: produced_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rejected_qty
+		dataType: double
+		lineageTag: 2459f0e2-43a2-488c-903c-7ef9e565e566
+		summarizeBy: sum
+		sourceColumn: rejected_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column good_qty
+		dataType: double
+		lineageTag: 489d71a8-afd4-438a-9c80-948175ae7d84
+		summarizeBy: sum
+		sourceColumn: good_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column event_count
+		dataType: int64
+		formatString: 0
+		lineageTag: b1e31ce1-1701-43b2-9410-bcbc3c7abc20
+		summarizeBy: sum
+		sourceColumn: event_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column lead_time_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 45feee8a-95cb-4dee-8363-2dfbc5cba93f
+		summarizeBy: sum
+		sourceColumn: lead_time_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_on_time
+		dataType: int64
+		formatString: 0
+		lineageTag: b95622ea-936d-43c7-9804-2ac7e1629153
+		summarizeBy: sum
+		sourceColumn: is_on_time
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_production_order = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "fact_production_order"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

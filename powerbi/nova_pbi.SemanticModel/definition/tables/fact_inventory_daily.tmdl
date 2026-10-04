@@ -1,0 +1,93 @@
+table fact_inventory_daily
+	lineageTag: 4b4a42f4-20ad-4fe0-a1c9-3783c3399636
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c8ec5f7f-5a58-47bf-b4e6-74e2a6e3a7dd
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d474edd-aa1e-4fd3-b67a-544f18e23fba
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column receipt_qty
+		dataType: double
+		lineageTag: c04eaab9-d198-4108-b764-f0a1bae06ada
+		summarizeBy: sum
+		sourceColumn: receipt_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column shipment_qty
+		dataType: double
+		lineageTag: 96dbc60b-6e81-4a67-9047-04dc7cdf847f
+		summarizeBy: sum
+		sourceColumn: shipment_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column closing_stock
+		dataType: double
+		lineageTag: 8f04d972-a9d7-4e31-b5a1-9ed444d9b5fc
+		summarizeBy: sum
+		sourceColumn: closing_stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column safety_stock
+		dataType: double
+		lineageTag: e4fda1c1-7d51-4b3b-96f5-1e1c46e8a85b
+		summarizeBy: sum
+		sourceColumn: safety_stock
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column stock_gap
+		dataType: double
+		lineageTag: caca138f-633d-4316-8955-633d733bb7f0
+		summarizeBy: sum
+		sourceColumn: stock_gap
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_below_safety_stock
+		dataType: int64
+		formatString: 0
+		lineageTag: e7c939bb-caff-447f-b859-9a44a03bd010
+		summarizeBy: sum
+		sourceColumn: is_below_safety_stock
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_inventory_daily = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "fact_inventory_daily"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

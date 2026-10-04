@@ -1,0 +1,96 @@
+table _Medidas
+	lineageTag: e4ce8fc6-6195-46be-9fef-f77d582f9652
+
+	measure Pedidos = DISTINCTCOUNT ( fact_sales[sales_order_id] )
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Ventas👨‍💼
+		lineageTag: e6337827-db54-413a-8126-4347941885a5
+
+	measure 'Unidades Pedidas' = SUM ( fact_sales[ordered_qty] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 5b4a0efa-edde-4bcd-a165-41f509f9554f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unidades Entregadas' = SUM ( fact_sales[delivered_qty] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 346e9a6d-d00b-4d0f-9a9b-3968bb47374d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unidades Pendientes' = SUM ( fact_sales[pending_qty] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 0e8314ce-67ab-4c5d-8768-194325897250
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Backlog Valor' =
+			
+			// Cartera pendiente (valor) de los pedidos del periodo, según su estado actual
+			SUM ( fact_sales[pending_value] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 1563b31a-f874-4468-9151-7fd55d75fd88
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Backlog Vencido Valor' =
+			
+			CALCULATE ( [Backlog Valor], fact_sales[is_overdue] = 1 )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 9eb282bf-a121-427b-ad4b-e9f864a96888
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'OTIF %' =
+			
+			// Líneas entregadas completas y a tiempo / líneas entregadas completas
+			DIVIDE (
+			    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[is_otif] = 1 ),
+			    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[is_fully_delivered] = 1 )
+			)
+		displayFolder: Ventas👨‍💼
+		lineageTag: dd3aa61b-c5af-4893-9343-90da36c200c2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Precio Medio' = DIVIDE ( [Valor Pedidos], [Unidades Pedidas] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 0edbf3b2-ca2e-4b66-a017-25360e4572ae
+
+	measure 'Valor Pedidos' = SUM ( fact_sales[order_value] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: 47408ce3-e0b3-4c26-a192-8ca0d53cf94c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Valor Pedidos MoM %' =
+			
+			DIVIDE ( [Valor Pedidos] - [Valor Pedidos Mes Anterior], [Valor Pedidos Mes Anterior] )
+		displayFolder: Ventas👨‍💼
+		lineageTag: ee902f05-4ff0-49fd-bc8c-edb2b3462d60
+
+	measure 'Valor Pedidos por Fecha Solicitada' =
+			
+			// Pedidos por fecha SOLICITADA (usa la relación inactiva)
+			CALCULATE (
+			    [Valor Pedidos],
+			    USERELATIONSHIP ( dim_date[date], fact_sales[requested_delivery_date] )
+			)
+		displayFolder: Ventas👨‍💼
+		lineageTag: 6d7b39d1-51f4-43ec-abc8-8bf19797c9cb
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+				  Origen = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Columna 1" = _t]),
+				    #"Columnas quitadas" = Table.RemoveColumns(Origen,{"Columna 1"})
+				in
+				  #"Columnas quitadas"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,47 @@
+table dim_customer
+	lineageTag: 31812de2-a1c7-411f-a6ae-3f07d2ffcc5f
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 445a9be9-9908-4371-949f-81218e490e22
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_code
+		dataType: string
+		lineageTag: f68c3d68-d8e3-46fa-acc7-67fe95524e52
+		summarizeBy: none
+		sourceColumn: customer_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 43990c62-1c0e-4fa7-b6a3-2679b454f64f
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_segment
+		dataType: string
+		lineageTag: 9a6fa663-60ca-47ac-899c-4d8d5a30305e
+		summarizeBy: none
+		sourceColumn: customer_segment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "dim_customer"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

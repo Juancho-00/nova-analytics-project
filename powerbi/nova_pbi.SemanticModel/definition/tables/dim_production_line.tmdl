@@ -1,0 +1,90 @@
+table dim_production_line
+	lineageTag: 42e28a90-bbf4-48ce-8fcc-1a809ce5b220
+
+	column production_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2361393f-df90-4380-8361-db97f7e5b16b
+		summarizeBy: none
+		sourceColumn: production_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_code
+		dataType: string
+		lineageTag: f7201383-9f9f-46f2-8d1e-aacb971cba7d
+		summarizeBy: none
+		sourceColumn: line_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_name
+		dataType: string
+		lineageTag: f1f773f5-ae59-4091-b6b4-5d1a5c59f540
+		summarizeBy: none
+		sourceColumn: line_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column line_plant_label
+		dataType: string
+		lineageTag: ae5578ec-510a-470e-881e-c596b5b8fe74
+		summarizeBy: none
+		sourceColumn: line_plant_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_family
+		dataType: string
+		lineageTag: 6c90ccdd-e2b4-4411-ad84-f607c627fa29
+		summarizeBy: none
+		sourceColumn: product_family
+
+		annotation SummarizationSetBy = Automatic
+
+	column daily_capacity
+		dataType: double
+		lineageTag: 04887ef1-e96e-48f0-96f3-d2004ad9d158
+		summarizeBy: sum
+		sourceColumn: daily_capacity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column plant_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a86ef60a-e631-4b5e-a554-0e1c77564bce
+		summarizeBy: sum
+		sourceColumn: plant_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column plant_code
+		dataType: string
+		lineageTag: b3bd0660-2f1c-4006-91fd-d4f441fdb92b
+		summarizeBy: none
+		sourceColumn: plant_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column plant_name
+		dataType: string
+		lineageTag: 8701b4f6-eefa-4b12-9de4-f9eaf128fc59
+		summarizeBy: none
+		sourceColumn: plant_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_production_line = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "dim_production_line"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

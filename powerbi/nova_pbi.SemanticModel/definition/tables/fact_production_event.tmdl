@@ -1,0 +1,123 @@
+table fact_production_event
+	lineageTag: bf6b11b0-44e2-4a49-bdc7-7140a783396b
+
+	column production_event_id
+		dataType: int64
+		formatString: 0
+		lineageTag: cf109696-eb46-46c2-b5b3-57c06acfa1df
+		summarizeBy: sum
+		sourceColumn: production_event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 717fca03-63a0-489a-b0d3-a76827c38378
+		summarizeBy: sum
+		sourceColumn: production_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4419ee97-1a0f-4e0c-836a-901401f662e1
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e83eda14-2a48-44ed-affc-092073633ed7
+		summarizeBy: none
+		sourceColumn: production_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 81717fcc-2543-4087-a34a-85e5b04b1563
+		summarizeBy: none
+		sourceColumn: event_timestamp
+
+		variation Variación
+			isDefault
+			relationship: 11c66bf1-e392-490b-8824-220681710ade
+			defaultHierarchy: LocalDateTable_bef27ebd-177f-40ff-a64e-82d5e1366203.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8547d54c-63d2-4ffc-a9cb-073fdccd2a62
+		summarizeBy: none
+		sourceColumn: event_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column shift_name
+		dataType: string
+		lineageTag: 690d7927-20ae-4a1a-9fdb-841964bc2015
+		summarizeBy: none
+		sourceColumn: shift_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column produced_qty
+		dataType: double
+		lineageTag: 5aeaf9fd-2e58-4b67-a0a3-c646a2038ae5
+		summarizeBy: sum
+		sourceColumn: produced_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rejected_qty
+		dataType: double
+		lineageTag: 34c0a786-75bf-4e42-be21-e481deb04daf
+		summarizeBy: sum
+		sourceColumn: rejected_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column good_qty
+		dataType: double
+		lineageTag: 0c3a3a4a-5baa-4427-a0b2-ffe18c06d667
+		summarizeBy: sum
+		sourceColumn: good_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column reject_rate
+		dataType: double
+		lineageTag: 2531f02f-d311-46be-b6e4-ec2c0f11d24c
+		summarizeBy: sum
+		sourceColumn: reject_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_production_event = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "fact_production_event"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+

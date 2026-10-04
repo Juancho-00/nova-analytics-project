@@ -1,0 +1,151 @@
+// =====================================================================
+// Nova Components — Medidas DAX
+// Crea una tabla vacía "_Medidas" (Inicio > Escribir datos > Cargar)
+// y agrega cada medida ahí. Los comentarios indican la carpeta sugerida.
+// Requiere: dim_date marcada como tabla de fechas (columna [date]).
+// =====================================================================
+
+
+// ---------------------------------------------------------------- Ventas
+Pedidos = DISTINCTCOUNT ( fact_sales[sales_order_id] )
+
+Unidades Pedidas = SUM ( fact_sales[ordered_qty] )
+
+Valor Pedidos = SUM ( fact_sales[order_value] )
+
+Unidades Entregadas = SUM ( fact_sales[delivered_qty] )
+
+Unidades Pendientes = SUM ( fact_sales[pending_qty] )
+
+// Cartera pendiente (valor) de los pedidos del periodo, según su estado actual
+Backlog Valor = SUM ( fact_sales[pending_value] )
+
+Backlog Vencido Valor =
+CALCULATE ( [Backlog Valor], fact_sales[is_overdue] = 1 )
+
+// Líneas entregadas completas y a tiempo / líneas entregadas completas
+OTIF % =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[is_otif] = 1 ),
+    CALCULATE ( COUNTROWS ( fact_sales ), fact_sales[is_fully_delivered] = 1 )
+)
+
+Precio Medio = DIVIDE ( [Valor Pedidos], [Unidades Pedidas] )
+
+Valor Pedidos Mes Anterior =
+CALCULATE ( [Valor Pedidos], DATEADD ( dim_date[date], -1, MONTH ) )
+
+Valor Pedidos MoM % =
+DIVIDE ( [Valor Pedidos] - [Valor Pedidos Mes Anterior], [Valor Pedidos Mes Anterior] )
+
+// Pedidos por fecha SOLICITADA (usa la relación inactiva)
+Valor Pedidos por Fecha Solicitada =
+CALCULATE (
+    [Valor Pedidos],
+    USERELATIONSHIP ( dim_date[date], fact_sales[requested_delivery_date] )
+)
+
+
+// ------------------------------------------------------------- Despachos
+Despachos = COUNTROWS ( fact_shipment )
+
+Unidades Despachadas = SUM ( fact_shipment[shipped_qty] )
+
+Valor Despachado = SUM ( fact_shipment[shipped_value] )
+
+Despachos a Tiempo % =
+DIVIDE ( CALCULATE ( [Despachos], fact_shipment[is_on_time] = 1 ), [Despachos] )
+
+Días Retraso Promedio =
+AVERAGEX (
+    FILTER ( fact_shipment, fact_shipment[days_vs_requested] > 0 ),
+    fact_shipment[days_vs_requested]
+)
+
+
+// ------------------------------------------------------------ Producción
+Unidades Producidas = SUM ( fact_production_event[produced_qty] )
+
+Unidades Rechazadas = SUM ( fact_production_event[rejected_qty] )
+
+Unidades Buenas = SUM ( fact_production_event[good_qty] )
+
+Tasa Rechazo % = DIVIDE ( [Unidades Rechazadas], [Unidades Producidas] )
+
+Cantidad Planificada = SUM ( fact_production_order[planned_qty] )
+
+// Production Attainment: unidades buenas / planificadas (por fecha de creación de la orden)
+Cumplimiento Plan % =
+DIVIDE ( SUM ( fact_production_order[good_qty] ), [Cantidad Planificada] )
+
+Órdenes Producción = COUNTROWS ( fact_production_order )
+
+Órdenes Completadas =
+CALCULATE ( [Órdenes Producción], fact_production_order[order_status] = "COMPLETED" )
+
+Órdenes Pendientes =
+CALCULATE ( [Órdenes Producción], fact_production_order[order_status] IN { "PLANNED", "IN_PROGRESS" } )
+
+Producción a Tiempo % =
+DIVIDE (
+    CALCULATE ( [Órdenes Producción], fact_production_order[is_on_time] = 1 ),
+    [Órdenes Completadas]
+)
+
+Lead Time Producción (días) = AVERAGE ( fact_production_order[lead_time_days] )
+
+// Días hábiles dentro del periodo filtrado y del rango con datos
+Días Hábiles Operación =
+VAR _min = CALCULATE ( MIN ( fact_inventory_daily[date] ), REMOVEFILTERS () )
+VAR _max = CALCULATE ( MAX ( fact_inventory_daily[date] ), REMOVEFILTERS () )
+RETURN
+    CALCULATE (
+        COUNTROWS ( dim_date ),
+        dim_date[is_working_day] = 1,
+        KEEPFILTERS ( dim_date[date] >= _min && dim_date[date] <= _max )
+    )
+
+Utilización Capacidad % =
+DIVIDE (
+    [Unidades Producidas],
+    SUM ( dim_production_line[daily_capacity] ) * [Días Hábiles Operación]
+)
+
+
+// ------------------------------------------------------------ Inventario
+// El stock es SEMI-ADITIVO: se toma el ÚLTIMO día del periodo, no la suma de días.
+Stock Actual =
+VAR _ultimaFecha = MAX ( fact_inventory_daily[date] )
+RETURN
+    CALCULATE ( SUM ( fact_inventory_daily[closing_stock] ), fact_inventory_daily[date] = _ultimaFecha )
+
+Safety Stock =
+VAR _ultimaFecha = MAX ( fact_inventory_daily[date] )
+RETURN
+    CALCULATE ( SUM ( fact_inventory_daily[safety_stock] ), fact_inventory_daily[date] = _ultimaFecha )
+
+Brecha Stock = [Stock Actual] - [Safety Stock]
+
+Materiales Bajo Safety Stock =
+COUNTROWS (
+    FILTER ( VALUES ( dim_material[material_id] ), [Stock Actual] < [Safety Stock] )
+)
+
+Valor Inventario =
+VAR _ultimaFecha = MAX ( fact_inventory_daily[date] )
+RETURN
+    SUMX (
+        FILTER ( fact_inventory_daily, fact_inventory_daily[date] = _ultimaFecha ),
+        fact_inventory_daily[closing_stock] * RELATED ( dim_material[unit_price] )
+    )
+
+// Promedio de despacho diario de las últimas 4 semanas (~20 días hábiles)
+Despacho Diario Promedio 20d =
+VAR _fin = MAX ( fact_inventory_daily[date] )
+RETURN
+    DIVIDE (
+        CALCULATE ( SUM ( fact_inventory_daily[shipment_qty] ), DATESINPERIOD ( dim_date[date], _fin, -28, DAY ) ),
+        20
+    )
+
+Días de Cobertura = DIVIDE ( [Stock Actual], [Despacho Diario Promedio 20d] )

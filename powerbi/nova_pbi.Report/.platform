@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "nova_pbi"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ea5e4ac2-c57b-4362-bba2-5c5348dd25c0"
+  }
+}

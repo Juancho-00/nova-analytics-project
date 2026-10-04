@@ -1,0 +1,240 @@
+table fact_sales
+	lineageTag: 89516e67-9c70-4139-9523-2daa7fd61e71
+
+	column sales_order_line_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9814284a-6a2c-4d22-8308-08eaa9e008b5
+		summarizeBy: sum
+		sourceColumn: sales_order_line_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_order_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e057f10e-f3fc-4ac7-8586-9344ff7960af
+		summarizeBy: sum
+		sourceColumn: sales_order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_number
+		dataType: string
+		lineageTag: a1f4d1d2-7d33-46d6-bdc9-4ed7bb7c596e
+		summarizeBy: none
+		sourceColumn: order_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f829dfb3-df28-4c8f-a8b8-3ae881f80dea
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column material_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 54fdd115-e276-4019-a786-d121ba897bc5
+		summarizeBy: none
+		sourceColumn: material_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d76c3da0-5953-4548-87fb-ff4bad7a308c
+		summarizeBy: none
+		sourceColumn: order_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column requested_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 03ef4c9e-5d0c-4206-a4f4-4f7522c19fbf
+		summarizeBy: none
+		sourceColumn: requested_delivery_date
+
+		variation Variación
+			isDefault
+			relationship: 06cefd9f-4d44-4901-a542-19a9370ea843
+			defaultHierarchy: LocalDateTable_8c9b9abe-56ad-4b92-8d28-6359f2d917e7.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_status
+		dataType: string
+		lineageTag: 06afee88-cb18-4c39-9c26-2200a0f37515
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column ordered_qty
+		dataType: double
+		lineageTag: 81bd791c-e39c-45eb-8fc6-a07797ddc401
+		summarizeBy: sum
+		sourceColumn: ordered_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column delivered_qty
+		dataType: double
+		lineageTag: 5f2ec133-556d-4c07-83e3-5739cab3aee1
+		summarizeBy: sum
+		sourceColumn: delivered_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pending_qty
+		dataType: double
+		lineageTag: 41ec8fa3-225c-4846-b75e-f0e090d9276c
+		summarizeBy: sum
+		sourceColumn: pending_qty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column unit_price
+		dataType: double
+		lineageTag: 9ca02dd9-c838-4267-8034-4126d0776732
+		summarizeBy: sum
+		sourceColumn: unit_price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_value
+		dataType: double
+		lineageTag: 4f26f0fc-25a5-4e01-b1ed-29fdf7270528
+		summarizeBy: sum
+		sourceColumn: order_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column delivered_value
+		dataType: double
+		lineageTag: 74a26c1e-6232-4dc8-b068-8c4aa05d66e5
+		summarizeBy: sum
+		sourceColumn: delivered_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pending_value
+		dataType: double
+		lineageTag: 430f05be-95ec-4952-9255-ff94fe030d72
+		summarizeBy: sum
+		sourceColumn: pending_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column first_shipment_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 57a610d7-fe76-4751-9339-40d4587901c7
+		summarizeBy: none
+		sourceColumn: first_shipment_date
+
+		variation Variación
+			isDefault
+			relationship: 5640c9f1-7ba4-4c31-a673-3944eb5169b5
+			defaultHierarchy: LocalDateTable_0401f5e1-b377-4c55-8fd8-84c314471de4.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column last_shipment_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0ff9644f-0f19-426b-9606-59ed1539101e
+		summarizeBy: none
+		sourceColumn: last_shipment_date
+
+		variation Variación
+			isDefault
+			relationship: 0c72254f-ab01-45de-aeec-4d7d313d7500
+			defaultHierarchy: LocalDateTable_bda6c4d7-5607-4c02-810a-3c53d1be1134.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column shipment_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 88d3bb17-bc86-4df9-9ec8-e8b67234a819
+		summarizeBy: sum
+		sourceColumn: shipment_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column requested_lead_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ebc2d93-aa27-47bc-8e9d-a395b6c08dc4
+		summarizeBy: sum
+		sourceColumn: requested_lead_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_fully_delivered
+		dataType: int64
+		formatString: 0
+		lineageTag: 409707e5-99e0-426d-b08b-0fdb7829f917
+		summarizeBy: sum
+		sourceColumn: is_fully_delivered
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_otif
+		dataType: int64
+		formatString: 0
+		lineageTag: e88dc6fd-b561-4d52-b978-35da784e4b0f
+		summarizeBy: sum
+		sourceColumn: is_otif
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_overdue
+		dataType: int64
+		formatString: 0
+		lineageTag: 5271c557-a59c-4daa-8c0d-992c489b5115
+		summarizeBy: sum
+		sourceColumn: is_overdue
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_sales = m
+		mode: import
+		source =
+				let
+				  Origen = Sql.Database("sql-nova-analyticsserver.database.windows.net", "free-sql-db-9377179"),
+				  #"Navegación 1" = Origen{[Schema = "analytics", Item = "fact_sales"]}[Data]
+				in
+				  #"Navegación 1"
+
+	annotation PBI_ResultType = Table
+
